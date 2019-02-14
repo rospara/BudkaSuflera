@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BudkaSuflera
 {
-    class Program
+    public class Program
     {
         static void Main(string[] args)
         {
@@ -16,6 +16,11 @@ namespace BudkaSuflera
             Console.ReadKey();
 
             // Go to http://aka.ms/dotnet-get-started-console to continue learning how to build a console app! 
+        }
+
+        public static string CheckSongContent(string song, string crisWords)
+        {
+            throw new NotImplementedException();
         }
     }
 }

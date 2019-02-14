@@ -1,4 +1,5 @@
 ﻿using System;
+using BudkaSuflera;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace BudkaSufleraTest
@@ -10,16 +11,18 @@ namespace BudkaSufleraTest
         public void TestMethod1()
         {
             string song = "JOLKA JOLKA PAMIETASZ LATO ZE SNU";
-            string crisWords = "JOLKA ZE SNU";
+            string crisWords = "JOLKA ZE SNU";   
 
-            string output = checkSongContent(song, crisWords);
+            string output = Program.CheckSongContent(song, crisWords);
 
-            string [] allLines = output.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+            string [] outputLines = output.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
 
-            Assert(int.Parse(allLines[0]), 1);
-            foreach (var line in )
+            Assert.IsTrue(int.Parse(outputLines[0]) == 1);
+            var expectedResult = new string [] { "JOLKA", "LATO", "PAMIETASZ"};
+            Assert.IsTrue(outputLines.Length - 1 == expectedResult.Length);
+            for (int i = 1, j=0; i < outputLines.Length && j < expectedResult.Length; ++i,++j)
             {
-
+                Assert.AreEqual(outputLines[i], expectedResult[j]);
             }
         }
     }

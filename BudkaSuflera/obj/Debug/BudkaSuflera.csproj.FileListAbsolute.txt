@@ -1,0 +1,7 @@
+C:\MyApps\BudkaSuflera\BudkaSuflera\bin\Debug\BudkaSuflera.exe.config
+C:\MyApps\BudkaSuflera\BudkaSuflera\bin\Debug\BudkaSuflera.exe
+C:\MyApps\BudkaSuflera\BudkaSuflera\bin\Debug\BudkaSuflera.pdb
+C:\MyApps\BudkaSuflera\BudkaSuflera\obj\Debug\BudkaSuflera.csprojAssemblyReference.cache
+C:\MyApps\BudkaSuflera\BudkaSuflera\obj\Debug\BudkaSuflera.csproj.CoreCompileInputs.cache
+C:\MyApps\BudkaSuflera\BudkaSuflera\obj\Debug\BudkaSuflera.exe
+C:\MyApps\BudkaSuflera\BudkaSuflera\obj\Debug\BudkaSuflera.pdb
