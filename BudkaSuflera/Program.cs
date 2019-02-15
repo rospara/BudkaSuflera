@@ -20,7 +20,16 @@ namespace BudkaSuflera
 
         public static string CheckSongContent(string song, string crisWords)
         {
-            throw new NotImplementedException();
+            HashSet<string> songSet = new HashSet<string>(song.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries));
+            HashSet<string> crisSet = new HashSet<string>(crisWords.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries));
+            songSet.ExceptWith(crisSet);
+            StringBuilder result = new StringBuilder();
+            result.Append(songSet.Count);
+            result.Append(Environment.NewLine);
+            songSet
+            result.
+
+
         }
     }
 }
