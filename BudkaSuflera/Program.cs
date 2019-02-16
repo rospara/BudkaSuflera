@@ -26,10 +26,10 @@ namespace BudkaSuflera
             StringBuilder result = new StringBuilder();
             result.Append(songSet.Count);
             result.Append(Environment.NewLine);
-            songSet
-            result.
+            //songSet
+            //result.
 
-
+            return result.ToString();
         }
     }
 }
