@@ -6,7 +6,7 @@ namespace BudkaSuflera
 {
     public class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
             string song = Console.ReadLine();
             string crisWords = Console.ReadLine();
@@ -16,29 +16,43 @@ namespace BudkaSuflera
 
         public static string CheckSongContent(string song, string crisWords)
         {
-            List<string> songList = new List<string>(song.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries));
-            List<string> crisVersion = new List<string>(crisWords.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries));
+            List<string> songList = new List<string>(song.Split(' '));
+            songList.Sort();
+            List<string> crisVersion = new List<string>(crisWords.Split(' '));
+            crisVersion.Sort();        
+            StringBuilder resultString = new StringBuilder();
+            resultString.Append("{0}" + Environment.NewLine);
 
-            List<string> resultList = new List<string>();
+            int wordsCount = 0;
 
-            foreach (var word in songList)
+            for (int i = 0; i < songList.Count; ++i)
             {
-                if (crisVersion.Contains(word))
+                string word = songList[i];
+
+                int found = crisVersion.BinarySearch(word);
+
+                if (found >= 0)
                 {
-                    crisVersion.Remove(word);
+                    crisVersion.RemoveAt(found);
                 }
                 else
                 {
-                    resultList.Add(word);
+                    resultString.Append(word + Environment.NewLine);
+                    ++wordsCount;
+                }
+
+                if (crisVersion.Count == 0)
+                {
+                    for (int j = i + 1; j < songList.Count; ++j)
+                    {
+                        resultString.Append(songList[j] + Environment.NewLine);
+                        ++wordsCount;
+                    }
+                    break;
                 }
             }
 
-            resultList.Sort();
-
-            StringBuilder resultString = new StringBuilder();
-            resultString.Append(resultList.Count + Environment.NewLine);
-            resultString.Append(string.Join(Environment.NewLine, resultList));
-            return resultString.ToString();
+            return string.Format(resultString.ToString(), wordsCount);
         }
     }
 }
