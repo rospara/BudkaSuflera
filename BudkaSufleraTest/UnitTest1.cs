@@ -17,7 +17,7 @@ namespace BudkaSufleraTest
 
             string [] outputLines = output.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
 
-            Assert.IsTrue(int.Parse(outputLines[0]) == 1);
+            Assert.IsTrue(int.Parse(outputLines[0]) == 3);
             var expectedResult = new string [] { "JOLKA", "LATO", "PAMIETASZ"};
             Assert.IsTrue(outputLines.Length - 1 == expectedResult.Length);
             for (int i = 1, j=0; i < outputLines.Length && j < expectedResult.Length; ++i,++j)

@@ -20,16 +20,29 @@ namespace BudkaSuflera
 
         public static string CheckSongContent(string song, string crisWords)
         {
-            HashSet<string> songSet = new HashSet<string>(song.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries));
-            HashSet<string> crisSet = new HashSet<string>(crisWords.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries));
-            songSet.ExceptWith(crisSet);
-            StringBuilder result = new StringBuilder();
-            result.Append(songSet.Count);
-            result.Append(Environment.NewLine);
-            //songSet
-            //result.
+            List<string> songList = new List<string>(song.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries));
+            List<string> crisVersion = new List<string>(crisWords.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries));
 
-            return result.ToString();
+            List<string> resultList = new List<string>();
+
+            foreach (var word in songList)
+            {
+                if (crisVersion.Contains(word))
+                {
+                    crisVersion.Remove(word);
+                }
+                else
+                {
+                    resultList.Add(word);
+                }
+            }
+
+            resultList.Sort();
+
+            StringBuilder resultString = new StringBuilder();
+            resultString.Append(resultList.Count + Environment.NewLine);
+            resultString.Append(string.Join(Environment.NewLine, resultList));
+            return resultString.ToString();
         }
     }
 }
