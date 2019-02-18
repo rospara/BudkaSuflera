@@ -14,45 +14,47 @@ namespace BudkaSuflera
             Console.Write(CheckSongContent(song, crisWords));
         }
 
-        public static string CheckSongContent(string song, string crisWords)
+        public static string CheckSongContent(string song, string chrisWords)
         {
-            List<string> songList = new List<string>(song.Split(' '));
-            songList.Sort();
-            List<string> crisVersion = new List<string>(crisWords.Split(' '));
-            crisVersion.Sort();        
-            StringBuilder resultString = new StringBuilder();
-            resultString.Append("{0}" + Environment.NewLine);
+            string[] songList = song.Split(' ');
+            string[] chrisVersion = chrisWords.Split(' ');
 
-            int wordsCount = 0;
+            if (songList.Length == chrisVersion.Length)
+            {
+                return "0" + Environment.NewLine;
+            }
 
-            for (int i = 0; i < songList.Count; ++i)
+            List<string> misssedWords = new List<string>();
+            int indexOfChrisArray = 0;
+
+            for (int i = 0, end = songList.Length; i < end; ++i)
             {
                 string word = songList[i];
 
-                int found = crisVersion.BinarySearch(word);
+                string first = chrisVersion.Length > indexOfChrisArray ? chrisVersion[indexOfChrisArray] : null;
 
-                if (found >= 0)
+                if (first == word)
                 {
-                    crisVersion.RemoveAt(found);
+                    ++indexOfChrisArray;
                 }
                 else
                 {
-                    resultString.Append(word + Environment.NewLine);
-                    ++wordsCount;
+                    misssedWords.Add(word);
                 }
 
-                if (crisVersion.Count == 0)
+                if (chrisVersion.Length <= indexOfChrisArray)
                 {
-                    for (int j = i + 1; j < songList.Count; ++j)
+                    for (int j = i + 1, inend = songList.Length; j < inend; ++j)
                     {
-                        resultString.Append(songList[j] + Environment.NewLine);
-                        ++wordsCount;
+                        misssedWords.Add(songList[j]);
                     }
                     break;
                 }
             }
 
-            return string.Format(resultString.ToString(), wordsCount);
+            misssedWords.Sort();
+
+            return misssedWords.Count + Environment.NewLine + string.Join(Environment.NewLine, misssedWords);
         }
     }
 }
