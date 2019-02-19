@@ -24,7 +24,7 @@ namespace BudkaSuflera
                 return "0" + Environment.NewLine;
             }
 
-            List<string> misssedWords = new List<string>();
+            List<string> misssedWords = new List<string>(50000);
             int indexOfChrisArray = 0;
 
             for (int i = 0, end = songList.Length; i < end; ++i)
@@ -52,7 +52,7 @@ namespace BudkaSuflera
                 }
             }
 
-            misssedWords.Sort();
+            misssedWords.Sort(StringComparer.InvariantCultureIgnoreCase);
 
             return misssedWords.Count + Environment.NewLine + string.Join(Environment.NewLine, misssedWords);
         }
