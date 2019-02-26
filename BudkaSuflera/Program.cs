@@ -3,6 +3,112 @@ using System.Linq;
 
 namespace BudkaSuflera
 {
+    public class WordTree
+    {
+        TreeNode[] arrayOfTreeNodes = Enumerable.Repeat(new TreeNode(), 10000).ToArray();
+
+        private class TreeNode
+        {
+            public string Word { get; set; }
+            public int Count { get; set; }
+            public TreeNode LeftNode { get; set; }
+            public TreeNode RightNode { get; set; }
+        }
+
+        private TreeNode root = null;
+        public int Count { get; set; }
+        private string result;
+
+        public void AddWord(string word)
+        {
+            ++Count;
+
+            if (root == null)
+            {
+                root = new TreeNode() { Word = word, Count = 1, LeftNode = null, RightNode = null };
+            }
+            else
+            {
+                AddNodeRecursivly(root, word);
+            }
+
+        }
+
+        public string PrintWords()
+        {
+            if (root == null)
+            {
+                return string.Empty;
+            }
+
+            if (Count == 1)
+            {
+                return root.Word + Environment.NewLine;
+            }
+
+            result = String.Empty;
+            PrintRecursivly(root);
+            return result;
+
+        }
+
+        private void PrintRecursivly(TreeNode node)
+        {
+            if (node.LeftNode != null)
+            {
+                PrintRecursivly(node.LeftNode);
+            }
+
+            result += String.Concat(Enumerable.Repeat(node.Word + Environment.NewLine, node.Count));
+
+            if (node.RightNode != null)
+            {
+                PrintRecursivly(node.RightNode);
+            }
+        }
+
+        private void AddNodeRecursivly(TreeNode node, string word)
+        {
+            int compareValue = StringComparer.InvariantCulture.Compare(word, node.Word);
+
+            switch (compareValue)
+            {
+                case 0:
+                    {
+                        ++node.Count;
+                    }
+                    break;
+
+
+                case -1:
+                    {
+                        if (node.LeftNode == null)
+                        {
+                            node.LeftNode = new TreeNode() { Word = word, Count = 1, LeftNode = null, RightNode = null };
+                        }
+                        else
+                        {
+                            AddNodeRecursivly(node.LeftNode, word);
+                        }
+                    }
+                    break;
+
+                case 1:
+                    {
+                        if (node.RightNode == null)
+                        {
+                            node.RightNode = new TreeNode() { Word = word, Count = 1, LeftNode = null, RightNode = null };
+                        }
+                        else
+                        {
+                            AddNodeRecursivly(node.RightNode, word);
+                        }
+                    }
+                    break;
+            }
+        }
+    }
+
     public class Program
     {
         static void Main()
@@ -51,95 +157,6 @@ namespace BudkaSuflera
             }
 
             return tree.Count.ToString() + Environment.NewLine + tree.PrintWords();
-        }
-    }
-
-    class WordTree
-    {
-        private class TreeNode
-        {
-            public string Word { get; set; }
-            public uint Count { get; set; }
-            public TreeNode LeftNode { get; set; }
-            public TreeNode RightNode { get; set; }
-        }
-
-        private TreeNode root = null;
-        public uint Count { get; set; }
-        public string Result { get; set; }
-
-        public void AddWord(string word)
-        {
-            ++Count;
-
-            if (root == null)
-            {
-                root = new TreeNode() { Word = word, Count = 1, LeftNode = null, RightNode = null };
-            }
-            else
-            {
-                AddNodeRecursivly(root, word);
-            }
-
-        }
-
-        public string PrintWords()
-        {
-            if (Count == 1)
-            {
-                return root.Word + Environment.NewLine;
-            }
-            else
-            {
-                Result = String.Empty;
-                PrintRecursivly(root);
-                return Result;
-            }
-        }
-
-        private void PrintRecursivly(TreeNode node)
-        {
-            if (node.LeftNode != null)
-            {
-                PrintRecursivly(node.LeftNode);
-            }
-
-            Result += String.Concat(Enumerable.Repeat(node.Word + Environment.NewLine, (int)node.Count));
-
-            if (node.RightNode != null)
-            {
-                PrintRecursivly(node.RightNode);
-            }
-        }
-
-        private void AddNodeRecursivly(TreeNode node, string word)
-        {
-            if (word.First() < node.Word.First() && StringComparer.InvariantCulture.Compare(word, node.Word) < 0)
-            {
-                if (node.LeftNode == null)
-                {
-                    node.LeftNode = new TreeNode() { Word = word, Count = 1, LeftNode = null, RightNode = null };
-                }
-                else
-                {
-                    AddNodeRecursivly(node.LeftNode, word);
-                }
-            }
-            else if (word.First() > node.Word.First() && StringComparer.InvariantCulture.Compare(word, node.Word) > 0)
-            {
-                if (node.RightNode == null)
-                {
-                    node.RightNode = new TreeNode() { Word = word, Count = 1, LeftNode = null, RightNode = null };
-                }
-                else
-                {
-                    AddNodeRecursivly(node.RightNode, word);
-                }
-            }
-            else
-            {
-                ++node.Count;
-            }
         }
     }
 }
